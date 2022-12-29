@@ -2,9 +2,7 @@
 {
     public class UpdatePetRequest
     {
-        internal string Description;
-        internal DateTime ConsultationDate;
-        internal int ConsultationId;
+       
 
         public int PetId { get; set; }
 
