@@ -5,11 +5,11 @@ namespace ClinicService.Services.Impl
 {
     public class ConsultationRepository : IConsultationRepository
     {
-        private const string _connectionString = "Data Source = clinic.db; Version = 3; Pooling = true; Max Pool Size = 100;";
+        private const string connectionString = "Data Source = clinic.db; Version = 3; Pooling = true; Max Pool Size = 100;";
        
         public int Create(Consultation item)
         {
-            SQLiteConnection connection = new SQLiteConnection(_connectionString);
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
             connection.Open();
             SQLiteCommand command = new SQLiteCommand(connection);
             command.CommandText = "INSERT INTO Consultations(ClientId, PetId, ConsultationDate, Description) VALUES(@ClientId, @PetId, @ConsultationDate, @Description)";
@@ -24,7 +24,7 @@ namespace ClinicService.Services.Impl
         }
         public int Update(Consultation item)
         {
-            SQLiteConnection connection = new SQLiteConnection(_connectionString);
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
             connection.Open();
             SQLiteCommand command = new SQLiteCommand(connection);
             command.CommandText = "UPDATE Consultations SET Document = @ClientId, PetId = @PetId, Description = @Description, ConsultationDate = @ConsultationDate WHERE ConsultationId=@ConsultationId";
@@ -38,14 +38,13 @@ namespace ClinicService.Services.Impl
             connection.Close();
             return res;
         }
-        public int Delete(Consultation
-            item)
+        public int Delete(Consultation item)
         {
-            SQLiteConnection connection = new SQLiteConnection(_connectionString);
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
             connection.Open();
             SQLiteCommand command = new SQLiteCommand(connection);
             command.CommandText = "DELETE FROM Consultations WHERE ConsultationId=@ConsultationId";
-            command.Parameters.AddWithValue("@ConsultationId", id);
+            command.Parameters.AddWithValue("@ConsultationId", item);
             command.Prepare();
             int res = command.ExecuteNonQuery();
             connection.Close();
@@ -54,7 +53,7 @@ namespace ClinicService.Services.Impl
         public IList<Consultation> GetAll()
         {
             List<Consultation> list = new List<Consultation>();
-            SQLiteConnection connection = new SQLiteConnection(_connectionString);
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
             connection.Open();
             SQLiteCommand command = new SQLiteCommand(connection);
             command.CommandText = "SELECT * FROM Consultations";
@@ -78,7 +77,7 @@ namespace ClinicService.Services.Impl
         public Consultation
             GetById(int id)
         {
-            SQLiteConnection connection = new SQLiteConnection(_connectionString);
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
             connection.Open();
             SQLiteCommand command = new SQLiteCommand(connection);
             command.CommandText = "SELECT * FROM Consultations WHERE ConsultationId=@ConsultationId";
