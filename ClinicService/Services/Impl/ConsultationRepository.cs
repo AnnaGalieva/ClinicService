@@ -15,7 +15,7 @@ namespace ClinicService.Services.Impl
             command.CommandText = "INSERT INTO Consultations(ClientId, PetId, ConsultationDate, Description) VALUES(@ClientId, @PetId, @ConsultationDate, @Description)";
             command.Parameters.AddWithValue("@ClientId", item.ClientId);
             command.Parameters.AddWithValue("@PetId", item.PetId);
-            command.Parameters.AddWithValue("@ConsultationDate", item.ConsultationDate.Ticks);
+            command.Parameters.AddWithValue("@ConsultationDate", item.ConsultationDate);
             command.Parameters.AddWithValue("@Description", item.Description);
             command.Prepare();
             int res = command.ExecuteNonQuery();
@@ -32,7 +32,7 @@ namespace ClinicService.Services.Impl
             command.Parameters.AddWithValue("@ClientId", item.ClientId);
             command.Parameters.AddWithValue("@PetId", item.PetId);
             command.Parameters.AddWithValue("@Description", item.Description);
-            command.Parameters.AddWithValue("@ConsultationDate", item.ConsultationDate.Ticks);
+            command.Parameters.AddWithValue("@ConsultationDate", item.ConsultationDate);
             command.Prepare();
             int res = command.ExecuteNonQuery();
             connection.Close();
@@ -104,10 +104,7 @@ namespace ClinicService.Services.Impl
             }
         }
 
-        public int Delete(int item)
-        {
-            throw new NotImplementedException();
+     
         }
     }
 
-}
