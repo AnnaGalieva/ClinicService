@@ -38,7 +38,7 @@ namespace ClinicService.Services.Impl
             connection.Close();
             return res;
         }
-        public int Delete(Consultation item)
+        public int Delete(int item)
         {
             SQLiteConnection connection = new SQLiteConnection(connectionString);
             connection.Open();
@@ -61,7 +61,7 @@ namespace ClinicService.Services.Impl
 
             while (reader.Read())
             {
-                Consultation consultation = new Consultation();
+                intConsultation consultation = new Consultation();
                 consultation.ConsultationId = reader.GetInt32(0);
                 consultation.ClientId = reader.GetInt32(1);
                 consultation.PetId = reader.GetInt32(2);

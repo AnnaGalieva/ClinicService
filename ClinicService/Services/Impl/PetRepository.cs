@@ -38,7 +38,7 @@ namespace ClinicService.Services.Impl
             connection.Close();
             return res;
         }
-        public int Delete(Pet item)
+        public int Delete(int item)
         {
             SQLiteConnection connection = new SQLiteConnection(connectionString);
             connection.Open();
@@ -96,7 +96,7 @@ namespace ClinicService.Services.Impl
             }
         }
 
-       
+        
     }
 }
   
