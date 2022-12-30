@@ -104,7 +104,10 @@ namespace ClinicService.Services.Impl
             }
         }
 
-     
+        public int Delete(int item)
+        {
+            throw new NotImplementedException();
         }
+    }
     }
 
