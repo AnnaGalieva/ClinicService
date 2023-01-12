@@ -61,7 +61,7 @@ namespace ClinicService.Services.Impl
 
             while (reader.Read())
             {
-                intConsultation consultation = new Consultation();
+                Consultation consultation = new Consultation();
                 consultation.ConsultationId = reader.GetInt32(0);
                 consultation.ClientId = reader.GetInt32(1);
                 consultation.PetId = reader.GetInt32(2);
