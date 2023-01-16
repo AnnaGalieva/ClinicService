@@ -89,5 +89,13 @@
   <ItemGroup>
     <Folder Include="System\Runtime\Serialization\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="OpenAPIs\index.html">
+      <Namespace>ClinicServiceClientNamespace</Namespace>
+      <ClassName>ClinicServiceClient</ClassName>
+      <CodeGenerator>NSwagCSharp</CodeGenerator>
+      <SourceUri>http://localhost:5043/swagger/index.html</SourceUri>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
