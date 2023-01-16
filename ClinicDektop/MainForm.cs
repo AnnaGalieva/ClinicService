@@ -5,43 +5,61 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ClinicDektop
+namespace ClinicDesctop
 {
+
+    /// <summary>
+    /// НЕОБХОДИМО ПОДКЛЮЧИТЬ СБОРКУ: System.Runtime.Serialization
+    /// 
+    /// 
+    /// 
+    /// ДОМАШНЕЕ ЗАДАНИЕ:
+    /// 
+    /// Разработать приложение ClinicDesctop, подключить ClinicService к вашему клиентскому приложению.
+    /// </summary>
     public partial class MainForm : Form
     {
         public MainForm()
         {
             InitializeComponent();
+            Method();
+        }
+
+        public void Method()
+        {
+
         }
 
         private void buttonLoadClients_Click(object sender, EventArgs e)
         {
-            ClinicServiceClient clinicServiceClient = new ClinicServiceClient("http://localhost:5043/", new HttpClient());
-            var clients = clinicServiceClient.GetAllAsync().Result;
+            ClinicServiceClient clinicServiceClient =
+                new ClinicServiceClient("http://localhost:5043/", new System.Net.Http.HttpClient());
 
-            List<ListViewItem> clientItems = new List<ListViewItem>();
+            ICollection<Client> clients = clinicServiceClient.ClientGetAllAsync().Result;
+            listViewClients.Items.Clear();
             foreach (Client client in clients)
             {
-                ListViewItem item = new ListViewItem()
+                ListViewItem item = new ListViewItem();
+                item.Text = client.ClientId.ToString();
+                item.SubItems.Add(new ListViewItem.ListViewSubItem()
                 {
-                    Text = client.ClientId.ToString(),
-                    SubItems =
-                    {
-                        client.SurName,
-                        client.FirstName,
-                        client.Patronymic
-                    }
-                };
-                clientItems.Add(item);
-            }
+                    Text = client.SurName
+                });
+                item.SubItems.Add(new ListViewItem.ListViewSubItem()
+                {
+                    Text = client.FirstName
+                });
+                item.SubItems.Add(new ListViewItem.ListViewSubItem()
+                {
+                    Text = client.Patronymic
+                });
 
-            listViewClients.Items.Clear();
-            listViewClients.Items.AddRange(clientItems.ToArray());
+                listViewClients.Items.Add(item);
+            }
         }
     }
 }

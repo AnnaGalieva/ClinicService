@@ -4,25 +4,30 @@ using System.Data.SQLite;
 
 namespace ClinicService
 {
-
-    /// <summary>
-    /// SQLite
-    /// https://sqlitestudio.pl/
-    /// </summary>
     public class Program
     {
+        /// Swashbuckle.AspNetCore.Annotations
+        /// https://sqlitestudio.pl/
+        /// https://www.sqlite.org/datatype3.html
         public static void Main(string[] args)
         {
-            ConfigureSQLiteConnection();
+            //ConfigureSqliteConnection();
+
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            //  Singleton - одиночка.
+            //  Scoped - создаются заново при каждом запросе от клиента
             builder.Services.AddScoped<IClientRepository, ClientRepository>();
+            builder.Services.AddScoped<IConsultationRepository, ConsultationRepository>();
+            builder.Services.AddScoped<IPetRepository, PetRepository>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(config =>
+            {
+                config.EnableAnnotations();
+            });
 
             var app = builder.Build();
 
@@ -41,60 +46,50 @@ namespace ClinicService
             app.Run();
         }
 
-        private static void ConfigureSQLiteConnection()
+        private static void ConfigureSqliteConnection()
         {
-            const string connectionString = "Data Source = clinic.db; Version = 3; Pooling = true; Max Pool Size = 100;";
-            SQLiteConnection sQLiteConnection = new SQLiteConnection(connectionString);
-            sQLiteConnection.Open();
-            PrepareSchema(sQLiteConnection);
-
+            string connectionString = "Data Source = clinic.db; Version = 3; Pooling = true; Max Pool Size = 100;";
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
+            connection.Open();
+            PrepareSchema(connection);
         }
 
-        private static void PrepareSchema(SQLiteConnection sQLiteConnection)
+        private static void PrepareSchema(SQLiteConnection connection)
         {
-            SQLiteCommand sQLiteCommand = new SQLiteCommand(sQLiteConnection);
+            SQLiteCommand command = new SQLiteCommand(connection);
 
-            sQLiteCommand.CommandText = "DROP TABLE IF EXISTS consultations";
-            sQLiteCommand.ExecuteNonQuery();
-            sQLiteCommand.CommandText = "DROP TABLE IF EXISTS pets";
-            sQLiteCommand.ExecuteNonQuery();
-            sQLiteCommand.CommandText = "DROP TABLE IF EXISTS clients";
-            sQLiteCommand.ExecuteNonQuery();
+            command.CommandText = "DROP TABLE IF EXISTS Consultations";
+            command.ExecuteNonQuery();
+            command.CommandText = "DROP TABLE IF EXISTS Pets";
+            command.ExecuteNonQuery();
+            command.CommandText = "DROP TABLE IF EXISTS Clients";
+            command.ExecuteNonQuery();
 
-            sQLiteCommand.CommandText =
+            command.CommandText =
                     @"CREATE TABLE Clients(
                     ClientId INTEGER PRIMARY KEY,
                     Document TEXT,
                     SurName TEXT,
                     FirstName TEXT,
                     Patronymic TEXT,
-                    Birthday INTEGER)"; // date.Ticks
-            sQLiteCommand.ExecuteNonQuery();
-            sQLiteCommand.CommandText =
+                    Birthday INTEGER)";
+            command.ExecuteNonQuery();
+            command.CommandText =
                     @"CREATE TABLE Pets(
                     PetId INTEGER PRIMARY KEY,
                     ClientId INTEGER,
                     Name TEXT,
                     Birthday INTEGER)";
-            sQLiteCommand.ExecuteNonQuery();
-            sQLiteCommand.CommandText =
-                @"CREATE TABLE Consultations(
+            command.ExecuteNonQuery();
+            command.CommandText =
+                    @"CREATE TABLE Consultations(
                     ConsultationId INTEGER PRIMARY KEY,
                     ClientId INTEGER,
                     PetId INTEGER,
                     ConsultationDate INTEGER,
                     Description TEXT)";
-            sQLiteCommand.ExecuteNonQuery();
-
-
+            command.ExecuteNonQuery();
 
         }
-
-
-
-
-
-
-
     }
 }

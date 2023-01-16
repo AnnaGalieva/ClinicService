@@ -3,6 +3,7 @@ using ClinicService.Models;
 using ClinicService.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicService.Controllers
 {
@@ -17,8 +18,10 @@ namespace ClinicService.Controllers
            _petRepository = petRepository;
     }
 
-    [HttpPost("create")]
-    public IActionResult Create([FromBody] CreatePetRequest createRequest)
+        [HttpPost("create")]
+        [SwaggerOperation(OperationId = "PetCreate")]
+
+        public ActionResult<int> Create([FromBody] CreatePetRequest createRequest)
     {
         int res = _petRepository.Create(new Pet
         {
@@ -29,36 +32,43 @@ namespace ClinicService.Controllers
         return Ok(res);
     }
 
-    [HttpPut("update")]
-    public IActionResult Update([FromBody] UpdatePetRequest updateRequest)
+        [HttpPut("update")]
+        [SwaggerOperation(OperationId = "PetUpdate")]
+
+        public ActionResult<int>Update([FromBody] UpdatePetRequest updateRequest)
     {
         int res = _petRepository.Update(new Pet
         {
             PetId = updateRequest.PetId,
-            Name = updateRequest.Name,
-            ClientId = updateRequest.ClientId,
+            Name = updateRequest.Name,    
             Birthday = updateRequest.Birthday,
         });
         return Ok(res);
     }
 
-    [HttpDelete("delete")]
-    public IActionResult Delete(int petId)
+        [HttpDelete("delete")]
+        [SwaggerOperation(OperationId = "PetDelete")]
+
+        public ActionResult<int>Delete(int petId)
     {
         int res = _petRepository.Delete(petId);
         return Ok(res);
     }
 
-    [HttpGet("get-all")]
-    public IActionResult GetAll()
+        [HttpGet("get-all")]
+        [SwaggerOperation(OperationId = "PetGetAll")]
+
+        public ActionResult<List<Pet>> GetAll(int clientId)
     {
-        return Ok(_petRepository.GetAll());
+        return Ok(new List<Pet>());
     }
 
-    [HttpGet("get-by-id")]
-    public IActionResult GetAll(int petId)
+        [HttpGet("get-by-id")]
+        [SwaggerOperation(OperationId = "PetGetAllById")]
+
+        public ActionResult<Pet>GetById(int petId)
     {
-        return Ok(_petRepository.GetById(petId));
+        return Ok(new Pet());
     }
 
 

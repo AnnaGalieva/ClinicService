@@ -18,7 +18,7 @@ namespace ClinicService.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult Create([FromBody] CreateConsultationRequest createRequest)
+        public ActionResult Create([FromBody] CreateConsultationRequest createRequest)
         {
             int res = _consultationRepository.Create(new Consultation
             {
@@ -31,7 +31,7 @@ namespace ClinicService.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult Update([FromBody] UpdatePetRequest updateRequest)
+        public ActionResult Update([FromBody] UpdateConsultationRequest updateRequest)
         {
             int res = _consultationRepository.Update(new Consultation
             {
@@ -45,20 +45,20 @@ namespace ClinicService.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete(int consultationId)
+        public ActionResult Delete(int consultationId)
         {
             int res = _consultationRepository.Delete(consultationId);
             return Ok(res);
         }
 
         [HttpGet("get-all")]
-        public IActionResult GetAll()
+        public ActionResult GetAll()
         {
             return Ok(_consultationRepository.GetAll());
         }
 
         [HttpGet("get-by-id")]
-        public IActionResult GetAll(int consultationId)
+        public ActionResult GetAll(int consultationId)
         {
             return Ok(_consultationRepository.GetById(consultationId));
         }
