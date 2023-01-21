@@ -1,4 +1,5 @@
 ﻿using ClinicService.Controllers;
+using ClinicService.Models;
 using ClinicService.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -89,13 +90,73 @@ namespace ClinicServiceTests
 
 
 
-    }
+
+        [Fact]
+        public void PetUpdateTest()
+        {
+            MyList<string> myList = new MyList<string>();
+
+            // МЕТОД ТЕСТИРОВАНИЯ СТОСТОИТ ИЗ 3 ЧАСТЕЙ
+
+            // [1] Подготовка данных для тестирования
+            UpdatePetRequest updatePetRequest = new UpdatePetRequest();
+            updatePetRequest.Name = "Персик";
+            updatePetRequest.Birthday = DateTime.Now.AddYears(-15);
 
 
-    public class MyList<TElement>
-    {
 
-        private TElement[] arr;
+            // [2] Исполнение тестируемой подпрограммы
+            ActionResult<int> operationResult = _petController.Update(updatePetRequest);
 
+            // [3] Подготовка эталонного результата (expected), проверка результата
+            int expectedOperationValue = 1;
+
+            // Assert
+            Assert.IsType<OkObjectResult>(operationResult.Result);
+            Assert.Equal<int>(expectedOperationValue, (int)(((OkObjectResult)operationResult.Result).Value));
+
+
+        }
+        [Theory]
+        [InlineData(1)]
+        [InlineData(10)]
+        [InlineData(500)]
+        public void GetAllTest(int clientId)
+        {
+            // [2] Исполнение тестируемой подпрограммы
+            ActionResult<List<Pet>> operationResult = _petController.GetAll( clientId);
+
+            // [3] Подготовка эталонного результата (expected), проверка результата
+            int expectedOperationValue = 1;
+
+            // Assert
+            Assert.IsType<OkObjectResult>(operationResult.Result);
+            Assert.Equal<int>(expectedOperationValue, (int)(((OkObjectResult)operationResult.Result).Value));
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(10)]
+        [InlineData(500)]
+        public void GetAllByIdTest(int PetId)
+        {
+            // [2] Исполнение тестируемой подпрограммы
+            ActionResult<Pet> operationResult = _petController.GetById( PetId);
+
+            // [3] Подготовка эталонного результата (expected), проверка результата
+            int expectedOperationValue = 1;
+
+            // Assert
+            Assert.IsType<OkObjectResult>(operationResult.Result);
+            Assert.Equal<int>(expectedOperationValue, (int)(((OkObjectResult)operationResult.Result).Value));
+        }
+
+        public class MyList<TElement>
+        {
+
+            private TElement[] arr;
+
+        }
     }
 }
+
